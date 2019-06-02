@@ -1,0 +1,41 @@
+{
+  "name": "mern-starter-pack",
+  "version": "1.0.0",
+  "description": "A starter pack for MERN applications",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon app.js",
+    "client": "npm start --prefix client",
+    "start": "node app.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexyblazy/MERN-starter-pack.git"
+  },
+  "keywords": [
+    "Javascript",
+    "NodeJS",
+    "MongoDB",
+    "React",
+    "Express"
+  ],
+  "author": "lexyblazy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lexyblazy/MERN-starter-pack/issues"
+  },
+  "homepage": "https://github.com/lexyblazy/MERN-starter-pack#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.9"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "morgan": "^1.9.0"
+  }
+}
