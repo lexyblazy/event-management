@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const morgan = require("morgan");
+
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 5000;
 const mongoose = require("mongoose");
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(morgan("dev"));
+
 app.use("/api", routes);
 
 // if we are in production
@@ -38,11 +38,13 @@ if (process.env.NODE_ENV === "production") {
   const path = require("path");
   // express will serve up our static assets such as index.html, main.js and css
   app.use(express.static("client/build"));
-
   //for any set of routes that are not defined within out app
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
+} else {
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
 }
 
 //and of course, listen on this port...
