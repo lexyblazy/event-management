@@ -1,20 +1,25 @@
 import React, { Component } from "react";
+import axios from "axios";
 import Navbar from "./components/NavBar";
-import Form from "./components/Form";
 import EventCalendar from "./components/EventCalendar";
-import Modal from "./components/Modal";
+import EventDetailsModal from "./components/EventDetailsModal";
+import CreateEventModal from "./components/CreateEventModal";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./App.css";
-import axios from "axios";
 
 class App extends Component {
   state = {
     events: [],
-    showModal: false,
+    detailsModal: false,
+    formModal: false,
     selectedEvent: {}
   };
-  async componentDidMount() {
+  componentDidMount() {
+    this.fetchAllEvents();
+  }
+
+  fetchAllEvents = async () => {
     try {
       const res = await axios.get("/api/events");
       const events = res.data.map(event => ({
@@ -26,10 +31,17 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
-  }
-  toggleModal = () => {
+  };
+
+  toggleEventModal = () => {
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      detailsModal: !prevState.detailsModal
+    }));
+  };
+
+  toggleFormModal = () => {
+    this.setState(prevState => ({
+      formModal: !prevState.formModal
     }));
   };
   showDetails = event => {
@@ -38,24 +50,34 @@ class App extends Component {
         selectedEvent: event
       },
       () => {
-        this.toggleModal();
+        this.toggleEventModal();
       }
     );
   };
   render() {
-    const { events, showModal, selectedEvent } = this.state;
+    const { events, detailsModal, selectedEvent, formModal } = this.state;
     return (
       <div>
         <Navbar />
         <div className="container">
           {/* <Form /> */}
+          <div className="margin-top-30">
+            <button className="btn btn-primary" onClick={this.toggleFormModal}>
+              New event
+            </button>
+          </div>
           {events.length > 0 ? (
             <EventCalendar events={events} showDetails={this.showDetails} />
           ) : null}
-          <Modal
-            isOpen={showModal}
-            toggle={this.toggleModal}
+          <EventDetailsModal
+            isOpen={detailsModal}
+            toggle={this.toggleEventModal}
             event={selectedEvent}
+          />
+          <CreateEventModal
+            isOpen={formModal}
+            toggle={this.toggleFormModal}
+            callback={this.fetchAllEvents}
           />
         </div>
       </div>

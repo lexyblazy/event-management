@@ -7,12 +7,12 @@ import moment from "moment";
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 const MyCalendar = ({ events, showDetails = () => {} }) => (
-  <div>
+  <div className="margin-top-30">
     <BigCalendar
       localizer={localizer}
       events={events}
       startAccessor="start"
-      defaultView={BigCalendar.Views.WEEK}
+      defaultView={BigCalendar.Views.MONTH}
       endAccessor="end"
       defaultDate={new Date()}
       selectable

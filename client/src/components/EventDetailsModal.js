@@ -2,11 +2,9 @@ import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Map from "./Map";
 
-function isValidObject(obj) {
-  return !!Object.keys(obj).length;
-}
+import { isValidObject } from "../utils";
 
-class ModalExample extends React.Component {
+class EventDetailsModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,27 +17,28 @@ class ModalExample extends React.Component {
   };
   render() {
     const { isOpen, event } = this.props;
-    console.log(event);
     return (
       <div>
-        <Modal isOpen={isOpen} toggle={this.toggle} size="large">
-          <ModalHeader toggle={this.toggle}>{event && event.title}</ModalHeader>
+        <Modal isOpen={isOpen} toggle={this.toggle} size="large" scrollable>
+          <ModalHeader toggle={this.toggle}>
+            {isValidObject(event) && event.title}
+          </ModalHeader>
           <ModalBody>
-            Details: {event && event.details} <br />
-            Address: {isValidObject(event) && event.location.address}
-            <div className="container" style={{ position: "relative" }}>
-              {/* <Map
+            <strong>Details</strong>: {isValidObject(event) && event.details}
+            <br />
+            <br />
+            <strong>Address</strong>:{" "}
+            {isValidObject(event) && event.location.address} <br /> <br />
+            <div style={{ position: "relative", height: 300 }}>
+              <Map
                 lat={isValidObject(event) && event.location.coordinates[1]}
                 lon={isValidObject(event) && event.location.coordinates[0]}
-              /> */}
+              />
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>
-              Do Something
-            </Button>{" "}
             <Button color="secondary" onClick={this.toggle}>
-              Cancel
+              Close
             </Button>
           </ModalFooter>
         </Modal>
@@ -48,4 +47,4 @@ class ModalExample extends React.Component {
   }
 }
 
-export default ModalExample;
+export default EventDetailsModal;
