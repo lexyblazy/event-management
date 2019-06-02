@@ -3,6 +3,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
+import { Spinner } from "reactstrap";
 
 class LocationSearchInput extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class LocationSearchInput extends React.Component {
               className={`autocomplete-dropdown-container ${suggestions.length &&
                 "card"}`}
             >
-              {loading && <div>Loading...</div>}
+              {loading && <Spinner type="grow" color="primary" />}
               {suggestions.map(suggestion => {
                 const className = suggestion.active
                   ? "suggestion-item--active"

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Navbar from "./components/NavBar";
+import { Spinner } from "reactstrap";
 import EventCalendar from "./components/EventCalendar";
 import EventDetailsModal from "./components/EventDetailsModal";
 import CreateEventModal from "./components/CreateEventModal";
@@ -68,7 +69,9 @@ class App extends Component {
           </div>
           {events.length > 0 ? (
             <EventCalendar events={events} showDetails={this.showDetails} />
-          ) : null}
+          ) : (
+            <Spinner type="grow" color="primary" />
+          )}
           <EventDetailsModal
             isOpen={detailsModal}
             toggle={this.toggleEventModal}
