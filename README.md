@@ -15,7 +15,7 @@ To host MERN stack applications, I know of two approaches.
 - in this scenario, the express application serves the react application as part of its static assets.<br>
   But since this a relatively small and simple application, I choose to go with the one server approach<br>
 
-###To run this application.
+### To run this application.
 
 ```
   git clone https://github.com/lexyblazy/event-management.git
