@@ -1,13 +1,5 @@
 const Event = require("../models/Event");
 
-// db.collection("events")
-//   .where("startAt", ">=", startAt)
-//   .where("startAt", "<=", endAt);
-
-function realDate(date) {
-  return new Date(date).toDateString();
-}
-
 exports.getEvents = async (req, res) => {
   try {
     const events = await Event.find();
@@ -20,30 +12,37 @@ exports.getEvents = async (req, res) => {
 
 exports.createEvent = async (req, res) => {
   const { title, details, dates, location } = req.body;
-  const [startAt, endAt] = dates;
-  console.log("New event startAt", realDate(startAt));
-  // console.log("New event endAt", endAt);
+  const start = new Date(dates[0]);
+  const end = new Date(dates[1]);
   try {
-    //check if there is an event at that venue
-    // const existingEvent = await Event.findOne({
-    //   "location.address": location.address,
-    //   $or: [
-    //     {}
-    //   ]
-    //   // startAt: { $lte: startAt }
-    // });
-    // if (existingEvent) {
-    //   console.log("Existing event startAt", realDate(existingEvent.startAt));
-    //   // console.log("Exisitng event endAt", existingEvent.endAt);
-    //   return res.send(
-    //     "There is already an event slated at this venue and time"
-    //   );
-    // }
+    const existingEvent = await Event.find({
+      "location.address": location.address,
+      $or: [
+        {
+          start: { $lte: start },
+          end: { $gte: start }
+        },
+        {
+          start: { $lte: end },
+          end: { $gte: end }
+        },
+        {
+          start: { $gt: start },
+          end: { $lt: end }
+        }
+      ]
+    });
+    if (existingEvent.length) {
+      return res.send({
+        message: "There is already an event slated at this venue and time",
+        existingEvent: true
+      });
+    }
     const event = new Event({
       title,
       details,
-      startAt,
-      endAt,
+      start,
+      end,
       location: {
         address: location.address,
         coordinates: [location.coordinates.lng, location.coordinates.lat]

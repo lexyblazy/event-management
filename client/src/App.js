@@ -25,8 +25,8 @@ class App extends Component {
       const res = await axios.get("/api/events");
       const events = res.data.map(event => ({
         ...event,
-        start: new Date(event.startAt),
-        end: new Date(event.endAt)
+        start: new Date(event.start),
+        end: new Date(event.end)
       }));
       this.setState({ events });
     } catch (error) {

@@ -24,20 +24,22 @@ class FormModal extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     const { callback } = this.props;
-    console.log(this.state);
     try {
       const res = await axios.post("/api/events", this.state);
       if (res.status === 200) {
-        callback && callback();
+        if (res.data.existingEvent) {
+          alert(res.data.message);
+        } else {
+          callback && callback();
+          this.toggle();
+          this.setState({
+            title: "",
+            details: ""
+          });
+        }
       }
     } catch (error) {
       console.log({ error });
-    } finally {
-      this.toggle();
-      this.setState({
-        title: "",
-        details: ""
-      });
     }
   };
 

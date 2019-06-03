@@ -25,10 +25,10 @@ const eventSchema = mongoose.Schema({
       required: "You must supply an address!"
     }
   },
-  startAt: {
+  start: {
     type: Date
   },
-  endAt: {
+  end: {
     type: Date
   }
 });
